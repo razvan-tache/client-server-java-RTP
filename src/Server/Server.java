@@ -1,36 +1,15 @@
 package Server;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
-public class Server implements ActionListener {
-
-    DatagramPacket datagramPacket;
-    DatagramSocket datagramSocket;
-
-    InetAddress ClientIpAddress;
-    int RTP_dest_port = 0;
-
-    byte[] buf;
-
+public class Server {
     Socket socket;
 
     private final static String CRLF = System.lineSeparator();
 
-    static BufferedReader reader;
-    static BufferedWriter writer;
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
+    public BufferedReader reader;
+    public BufferedWriter writer;
 
     private void parseRequest() {
         try {
@@ -60,5 +39,26 @@ public class Server implements ActionListener {
     private void writeLine(String message) throws IOException {
         writer.write(message);
         System.out.println("Writing: " + message);
+    }
+
+    public static void main(String[] args) throws Exception {
+        Server server = new Server();
+
+        int port = Integer.parseInt(args[0]);
+
+        ServerSocket socket = new ServerSocket(port);
+        server.socket = socket.accept();
+        socket.close();
+
+        server.reader = new BufferedReader(new InputStreamReader(server.socket.getInputStream()));
+        server.writer = new BufferedWriter(new OutputStreamWriter(server.socket.getOutputStream()));
+
+        boolean done = false;
+
+        while (!done) {
+            server.parseRequest();
+            server.sendResponse();
+            done = true;
+        }
     }
 }

@@ -1,31 +1,16 @@
 package Client;
 
 import java.io.*;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.Socket;
 
 public class Client {
-
-    private DatagramPacket datagramPacket; //UDP packet received from the server
-    private DatagramSocket datagramSocket; //socket to be used to send and receive UDP packets
-
-    private static int RTP_RCV_PORT = 25000; //port where the client will receive the RTP packets
-
-    private byte[] buffer; //buffer used to store data received from the server
-
     private Socket socket;
 
     private BufferedReader reader;
     private BufferedWriter writer;
 
     private final static String CRLF = System.lineSeparator();
-
-    public Client() {
-        //allocate enough memory for the buffer used to receive data from the server
-        buffer = new byte[15000];
-    }
 
     private void sendRequest() {
         try {
