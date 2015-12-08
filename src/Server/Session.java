@@ -1,6 +1,7 @@
 package Server;
 
 import java.math.BigInteger;
+import java.net.InetAddress;
 import java.security.SecureRandom;
 
 /**
@@ -11,6 +12,8 @@ public class Session {
     public String filePlaying;
     public int counter;
     public String state;
+    public int imageCount = 0;
+    public InetAddress clientIpAddress;
 
     private static SecureRandom random = new SecureRandom();
 
